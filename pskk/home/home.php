@@ -9,24 +9,23 @@
 	<br/>
 	<a href="insert.php"> Tambah Data</a>
 	<br/>
+	<a href="cetak.php" target="_blank">CETAK</a>
 	<br/>
 	
-	<form action="index.php" method="get">
-	<label>Cari :</label>
-	<input type="text" Nama="cari">
-	<input type="submit" value="Cari">
-	</form>
+	
+<!-- pencarian -->
+	<form method="GET" action="home.php" >
+  <label>Kata Pencarian : </label>
+  <input type="text" name="kata_cari" value="<?php if(isset($_GET['kata_cari'])) { echo $_GET['kata_cari']; } ?>"  />
+  <button type="submit">Cari</button>
+ </form>
 
-	<?php 
-		if(isset($_GET['cari'])){
-		$cari = $_GET['cari'];
-		echo "<b>Hasil pencarian : ".$cari."</b>";
-	}
-	?>
+ 
+
 
 	<table border="1">
 		<tr>
-			<th>No </th>
+			<!-- <th>No </th> -->
 			<th>Nomor Pegawai</th>
 			<th>Nama</th>
 			<th>Jenis Kelamin</th>
@@ -37,13 +36,36 @@
 			
 		</tr>
 		<?php 
-		include 'koneksi2.php';
-		$no = 1;
-		$data = mysqli_query($conn,"select * from karyawan");
-		while($d = mysqli_fetch_array($data)){
+		// include 'koneksi2.php';
+		// $no = 1;
+		// $data = mysqli_query($conn,"select * from karyawan");
+		// while($d = mysqli_fetch_array($data)){
 			?>
+
+			
+<?php
+   //untuk menyambungkan dengan file koneksi.php
+   include('koneksi2.php');
+    //jika kita klik cari, maka yang tampil query cari ini
+    if(isset($_GET['kata_cari'])) {
+     //menampung variabel kata_cari dari form pencarian
+     $kata_cari = $_GET['kata_cari'];
+     // mencari data dengan query
+     $query = "SELECT * FROM karyawan WHERE NomorPegawai like '%".$kata_cari."%' OR Nama like '%".$kata_cari."%' OR Alamat like '%".$kata_cari."%' ORDER BY NomorPegawai ASC";
+    } else {
+     //jika tidak ada pencarian, default yang dijalankan query ini
+     $query = "SELECT * FROM karyawan ORDER BY NomorPegawai ASC";
+    }
+    $result = mysqli_query($conn, $query);
+    if(!$result) {
+     die("Query Error : ".mysqli_errno($conn)." - ".mysqli_error($conn));
+    }
+    //kalau ini melakukan foreach atau perulangan
+    while ($d = mysqli_fetch_assoc($result)) {
+   ?>
+
 			<tr>
-				<td><?php echo $no++; ?></td>
+				<!-- <td>  echo $no++; </td> -->
 				<td><?php echo $d['NomorPegawai']; ?></td>
 				<td><?php echo $d['Nama']; ?></td>
 				<td><?php echo $d['JenisKelamin']; ?></td>
@@ -53,11 +75,13 @@
 				<td>
 					<a href="edit.php?NomorPegawai=<?php echo $d['NomorPegawai']; ?>">EDIT</a>
 					<a href="hapus.php?NomorPegawai=<?php echo $d['NomorPegawai']; ?>">HAPUS</a>
+					
 				</td>
 			</tr>
 			<?php 
 		}
 		?>
 	</table>
+	
 </body>
 </html>
