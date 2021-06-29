@@ -22,7 +22,7 @@
         <?php 
         include 'koneksi2.php';
 		$no = 1;
-		$data = mysqli_query($conn,"select * from karyawan");
+		$data = mysqli_query($conn,"select * from karyawan where Alamat='Bandung'");
 		while($d = mysqli_fetch_array($data)){
 			?>
 			<tr>

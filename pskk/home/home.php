@@ -1,3 +1,10 @@
+<?php 	
+include('koneksi3.php');
+//instansiasi objek database
+$db = new database();
+// $data_pegawai = $db->tampil_data();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,6 +72,7 @@
    ?>
 
 			<tr>
+			<!-- array satu dimensi -->
 				<!-- <td>  echo $no++; </td> -->
 				<td><?php echo $d['NomorPegawai']; ?></td>
 				<td><?php echo $d['Nama']; ?></td>
@@ -74,7 +82,7 @@
 				<td><?php echo $d['Alamat']; ?></td>
 				<td>
 					<a href="edit.php?NomorPegawai=<?php echo $d['NomorPegawai']; ?>">EDIT</a>
-					<a href="hapus.php?NomorPegawai=<?php echo $d['NomorPegawai']; ?>">HAPUS</a>
+					<a href="proses_data.php?action=delete&NomorPegawai=<?php echo $d['NomorPegawai']; ?>">Hapus</a>
 					
 				</td>
 			</tr>
